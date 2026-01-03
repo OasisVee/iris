@@ -44,6 +44,7 @@ pub struct PresetConfig {
     pub extension: Vec<String>,
     pub relative_path: Option<PathBuf>,
     pub absolute_path: Option<PathBuf>,
+    pub extension_folder: bool,
 }
 
 impl IrisConfig {

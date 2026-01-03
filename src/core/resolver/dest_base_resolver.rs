@@ -11,7 +11,11 @@ pub fn get_dest_base(target: &Path, preset: &PresetConfig, mode: Mode) -> Result
                 .relative_path
                 .as_ref()
                 .ok_or_else(|| format!("preset '{}' missing relative_path", preset.name))?;
-            Ok(target.join(rel))
+            if target.ends_with(rel) {
+                Ok(target.to_path_buf())
+            } else {
+                Ok(target.join(rel))
+            }
         }
         Mode::Absolute => {
             let abs = preset

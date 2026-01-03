@@ -33,6 +33,10 @@ pub fn process_presets(value: &Value) -> Vec<PresetConfig> {
                 .filter(|s| !s.is_empty()) // filter out empty strings
                 .map(resolve_path)
                 .unwrap_or_else(|| None),
+            extension_folder: table
+                .get("extension_folder")
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false),
         });
     }
 

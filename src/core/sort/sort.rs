@@ -197,7 +197,7 @@ pub fn sort(target: &Path, config: &IrisConfig) -> Result<(), Box<dyn std::error
         if let Some(preset) = ext_map.get(&extension) {
             // resolve the destination base path for the preset
             match dest_base_resolver::get_dest_base(&target, preset, mode.clone()) {
-                Ok(dest_base) => {
+                Ok(mut dest_base) => {
                     // guard: destination base should not be a dangerous system path
                     if PROTECTED_PATHS.iter().any(|p| Path::new(p) == dest_base) {
                         eprintln!(
@@ -205,6 +205,11 @@ pub fn sort(target: &Path, config: &IrisConfig) -> Result<(), Box<dyn std::error
                             dest_base.display()
                         );
                         continue;
+                    }
+
+                    // If extension_folder is true, append the extension to the path
+                    if preset.extension_folder {
+                        dest_base = dest_base.join(&extension);
                     }
 
                     // compute destination file path with basic collision handling

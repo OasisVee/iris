@@ -30,6 +30,7 @@ pub fn validate_presets(value: &Value) -> Result<(), ValidationError> {
     allowed_entries.insert("extension", (true, None));
     allowed_entries.insert("relative_path", (true, None));
     allowed_entries.insert("absolute_path", (true, None));
+    allowed_entries.insert("extension_folder", (false, None));
 
     let mut has_enabled = false;
 
@@ -99,6 +100,14 @@ pub fn validate_presets(value: &Value) -> Result<(), ValidationError> {
                         return Err(ValidationError::InvalidValue {
                             key: key.clone(),
                             value: value.to_string(),
+                        });
+                    }
+                }
+                "extension_folder" => {
+                    if !value.is_bool() {
+                        return Err(ValidationError::InvalidValue {
+                            key: key.clone(),
+                            value: "must be a boolean".to_string(),
                         });
                     }
                 }
